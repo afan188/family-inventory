@@ -1,0 +1,103 @@
+<!-- pages/item-detail/item-detail.wxml -->
+<view class="page" wx:if="{{item}}">
+  <!-- 头部 -->
+  <view class="detail-header" style="background:{{item.category_color}}18">
+    <view class="header-icon">{{item.category_icon}}</view>
+    <view class="header-info">
+      <text class="header-name">{{item.name}}</text>
+      <text class="header-cat">{{item.category_name}}</text>
+    </view>
+    <view class="header-edit" bindtap="goEdit">
+      <text>编辑</text>
+    </view>
+  </view>
+
+  <!-- 价格 & 日期 -->
+  <view class="price-card">
+    <view class="price-main">
+      <text class="price-label">购买价格</text>
+      <text class="price-val">¥{{price_str}}</text>
+    </view>
+    <view class="price-sep"></view>
+    <view class="price-main">
+      <text class="price-label">购买日期</text>
+      <text class="price-val date">{{date_str}}</text>
+    </view>
+    <view class="price-sep"></view>
+    <view class="price-main">
+      <text class="price-label">已持有</text>
+      <text class="price-val highlight">{{age}}</text>
+    </view>
+  </view>
+
+  <!-- 信息分组 -->
+  <view class="info-group">
+    <text class="group-title">📝 规格参数</text>
+    <view class="info-list">
+      <view wx:if="{{item.brandDisplay}}" class="info-row">
+        <text class="info-key">品牌型号</text>
+        <text class="info-val">{{item.brandDisplay}}</text>
+      </view>
+      <view wx:if="{{item.specs.color}}" class="info-row">
+        <text class="info-key">颜色</text>
+        <text class="info-val">{{item.specs.color}}</text>
+      </view>
+      <view wx:if="{{item.specs.dimension}}" class="info-row">
+        <text class="info-key">尺寸/容量</text>
+        <text class="info-val">{{item.specs.dimension}}</text>
+      </view>
+      <view wx:if="{{item.specs.weight}}" class="info-row">
+        <text class="info-key">重量</text>
+        <text class="info-val">{{item.specs.weight}}</text>
+      </view>
+      <view wx:if="{{item.specs.material}}" class="info-row">
+        <text class="info-key">材质/面料</text>
+        <text class="info-val">{{item.specs.material}}</text>
+      </view>
+      <view wx:if="{{item.clothesSize}}" class="info-row">
+        <text class="info-key">尺码</text>
+        <text class="info-val">{{item.clothesSize}}</text>
+      </view>
+      <view wx:if="{{item.shoesSize}}" class="info-row">
+        <text class="info-key">鞋码</text>
+        <text class="info-val">{{item.shoesSize}}</text>
+      </view>
+      <view wx:if="{{!item.brandDisplay && !item.specs.color && !item.specs.dimension && !item.specs.weight && !item.specs.material && !item.clothesSize && !item.shoesSize}}" class="info-empty">
+        <text>暂无规格参数</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="info-group">
+    <text class="group-title">🛒 购买信息</text>
+    <view class="info-list">
+      <view class="info-row">
+        <text class="info-key">购买渠道</text>
+        <text class="info-val">{{item.channel || '未记录'}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-key">存放位置</text>
+        <text class="info-val">{{item.location || '未记录'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{item.remark}}" class="info-group">
+    <text class="group-title">💬 备注</text>
+    <view class="remark-card">{{item.remark}}</view>
+  </view>
+
+  <view wx:if="{{item.tags && item.tags.length > 0}}" class="info-group">
+    <text class="group-title">🏷️ 标签</text>
+    <view class="tag-row">
+      <text wx:for="{{item.tags}}" wx:key="*this" class="tag-chip">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 底部操作 -->
+  <view class="bottom-actions">
+    <view class="action-btn danger" bindtap="deleteItem">
+      <text>🗑 删除此物品</text>
+    </view>
+  </view>
+</view>
