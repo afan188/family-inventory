@@ -1,0 +1,109 @@
+<!-- pages/settings/settings.wxml -->
+<view class="page">
+  <!-- 统计总览 -->
+  <view class="stat-overview">
+    <text class="stat-title">📊 资产总览</text>
+    <view class="stat-grid">
+      <view class="stat-cell">
+        <text class="stat-n">{{stats.total}}</text>
+        <text class="stat-k">物品总数</text>
+      </view>
+      <view class="stat-cell">
+        <text class="stat-n">¥{{stats.totalValue_str}}</text>
+        <text class="stat-k">累计价值</text>
+      </view>
+      <view class="stat-cell">
+        <text class="stat-n">{{stats.thisMonth}}</text>
+        <text class="stat-k">本月新增</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 云同步 -->
+  <view class="section">
+    <text class="sec-title">☁️ 云同步</text>
+    <view class="cloud-card">
+      <!-- 状态指示 -->
+      <view class="cloud-status">
+        <view class="cloud-dot {{cloudReady ? 'online' : 'offline'}}"></view>
+        <text class="cloud-status-text">{{cloudReady ? '已连接' : '未连接'}}</text>
+        <text wx:if="{{cloudReady}}" class="cloud-sync-time">上次同步: {{lastSyncTimeStr}}</text>
+      </view>
+
+      <!-- 环境ID（只读展示） -->
+      <view class="cloud-env-row">
+        <text class="cloud-env-label">云环境</text>
+        <text class="cloud-env-value">{{cloudEnvId}}</text>
+        <text class="cloud-env-badge">已配置</text>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="cloud-actions">
+        <text wx:if="{{cloudReady}}" class="cloud-btn primary" bindtap="manualSync">
+          {{syncing ? '同步中…' : '立即同步'}}
+        </text>
+      </view>
+
+      <!-- 说明 -->
+      <view class="cloud-hint">
+        <text class="cloud-hint-text">💡 数据自动同步至云端。换手机登录同一微信号即可恢复全部数据。</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 按分类统计 -->
+  <view class="section">
+    <text class="sec-title">📁 分类统计</text>
+    <view class="cat-stats">
+      <view wx:for="{{catStats}}" wx:key="id" class="cat-stat-row" bindtap="goCat" data-id="{{item.id}}">
+        <text class="cs-icon">{{item.icon}}</text>
+        <text class="cs-name">{{item.name}}</text>
+        <text class="cs-bar-wrap">
+          <text class="cs-bar" style="width:{{item.pct}}%;background:{{item.color}}"></text>
+        </text>
+        <text class="cs-count">{{item.count}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 工具 -->
+  <view class="section">
+    <text class="sec-title">🛠 工具</text>
+    <view class="action-list">
+      <view class="action-item" bindtap="exportData">
+        <text class="ai-icon">📤</text>
+        <view class="ai-body">
+          <text class="ai-name">导出数据</text>
+          <text class="ai-sub">将全部物品导出为 JSON 文件</text>
+        </view>
+        <text class="ai-arrow">›</text>
+      </view>
+      <view class="action-item" bindtap="importData">
+        <text class="ai-icon">📥</text>
+        <view class="ai-body">
+          <text class="ai-name">导入数据</text>
+          <text class="ai-sub">从 JSON 文件恢复物品数据</text>
+        </view>
+        <text class="ai-arrow">›</text>
+      </view>
+      <view class="action-item danger" bindtap="clearAll">
+        <text class="ai-icon">🗑</text>
+        <view class="ai-body">
+          <text class="ai-name">清空数据</text>
+          <text class="ai-sub">删除全部物品（不可恢复）</text>
+        </view>
+        <text class="ai-arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 关于 -->
+  <view class="section">
+    <text class="sec-title">ℹ️ 关于</text>
+    <view class="about-card">
+      <text class="about-name">家庭用品管理</text>
+      <text class="about-ver">版本 1.1.0</text>
+      <text class="about-desc">记录家庭物品，理清家底，避免重复购置。</text>
+    </view>
+  </view>
+</view>
