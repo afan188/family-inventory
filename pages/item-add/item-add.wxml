@@ -1,0 +1,334 @@
+<!-- pages/item-add/item-add.wxml -->
+<view class="page">
+  <!-- 步骤条 -->
+  <view class="steps-bar">
+    <view class="step-item {{step >= 1 ? 'active' : ''}}">
+      <view class="step-circle">{{step > 1 ? '✓' : '1'}}</view>
+      <text class="step-label">基本信息</text>
+    </view>
+    <view class="step-line {{step > 1 ? 'active' : ''}}"></view>
+    <view class="step-item {{step >= 2 ? 'active' : ''}}">
+      <view class="step-circle">2</view>
+      <text class="step-label">购买信息</text>
+    </view>
+  </view>
+
+  <!-- 步骤1：基本信息 -->
+  <scroll-view scroll-y class="form-scroll" wx:if="{{step === 1}}">
+    <view class="form-section">
+
+      <!-- 物品名称 -->
+      <view class="form-group">
+        <text class="form-label">物品名称 *</text>
+        <input class="form-input" placeholder="输入名称后会自动推荐分类…" value="{{form.name}}" bindinput="onNameInput" />
+      </view>
+
+      <!-- 分类 -->
+      <view class="form-group">
+        <text class="form-label">分类 *</text>
+        <view wx:if="{{form.category && form.name}}" class="rec-badge">
+          <text class="rec-icon">✨</text>
+          <text class="rec-text">已根据名称自动推荐</text>
+        </view>
+        <view class="pill-row">
+          <view wx:for="{{catTop5}}" wx:key="id"
+            class="pill {{form.category === item.id ? 'pill-sel' : ''}}"
+            style="{{form.category === item.id ? 'background:' + item.color + ';border-color:' + item.color + ';color:#fff;font-weight:600' : ''}}"
+            bindtap="selectCat" data-id="{{item.id}}">
+            <text>{{item.icon}}</text>
+            <text class="pill-name">{{item.name}}</text>
+          </view>
+        </view>
+        <view class="pill-row pill-row-bottom">
+          <view class="more-btn" bindtap="toggleCatExpand">
+            <text>更多</text>
+            <text class="arrow {{catExpanded ? 'up' : ''}}">›</text>
+          </view>
+          <view class="add-cat-btn" bindtap="showAddCatModal">
+            <text>＋ 增加分类</text>
+          </view>
+        </view>
+        <view wx:if="{{catExpanded}}" class="pill-row" style="margin-top:10rpx">
+          <view wx:for="{{catList}}" wx:key="id"
+            class="pill {{form.category === item.id ? 'pill-sel' : ''}}"
+            style="{{form.category === item.id ? 'background:' + item.color + ';border-color:' + item.color + ';color:#fff;font-weight:600' : ''}}"
+            bindtap="selectCat" data-id="{{item.id}}">
+            <text>{{item.icon}}</text>
+            <text class="pill-name">{{item.name}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 品牌型号 -->
+      <view class="form-group">
+        <text class="form-label">品牌型号</text>
+        <input class="form-input" placeholder="如：Apple iPhone 15 Pro" value="{{form.brandModel}}" bindinput="updateField" data-key="brandModel" />
+      </view>
+
+      <!-- 服装款式 + 尺码 -->
+      <view wx:if="{{form.category === 'clothing'}}" class="form-group">
+        <text class="form-label">款式 *</text>
+        <view class="pill-row">
+          <view wx:for="{{['男款','女款','通用款']}}" wx:key="*this"
+            class="pill {{form.clothesGender === item ? 'pill-sel' : ''}}"
+            style="{{form.clothesGender === item ? 'background:#3D7A5C;border-color:#3D7A5C;color:#fff;font-weight:600' : ''}}"
+            bindtap="selectClothesGender" data-g="{{item}}">{{item}}</view>
+        </view>
+        <text class="form-label" style="margin-top:28rpx">尺码</text>
+        <view class="pill-row" style="margin-top:10rpx">
+          <view wx:for="{{clothesSizeTop5}}" wx:key="*this"
+            class="pill {{form.clothesSize === item ? 'pill-sel' : ''}}"
+            style="{{form.clothesSize === item ? 'background:#3D7A5C;border-color:#3D7A5C;color:#fff;font-weight:600' : ''}}"
+            bindtap="selectClothesSize" data-size="{{item}}">{{item}}</view>
+          <view class="more-btn" bindtap="toggleClothesExpand">
+            <text>更多</text><text class="arrow {{clothesSizeExpanded ? 'up' : ''}}">›</text>
+          </view>
+        </view>
+        <view wx:if="{{clothesSizeExpanded}}" class="pill-row" style="margin-top:10rpx">
+          <view wx:for="{{clothesSizeOptions}}" wx:key="*this"
+            class="pill {{form.clothesSize === item ? 'pill-sel' : ''}}"
+            style="{{form.clothesSize === item ? 'background:#3D7A5C;border-color:#3D7A5C;color:#fff;font-weight:600' : ''}}"
+            bindtap="selectClothesSize" data-size="{{item}}">{{item}}</view>
+        </view>
+      </view>
+
+      <!-- 鞋款式 + 尺码 -->
+      <view wx:if="{{form.category === 'shoes'}}" class="form-group">
+        <text class="form-label">款式 *</text>
+        <view class="pill-row">
+          <view wx:for="{{['男款','女款','通用款']}}" wx:key="*this"
+            class="pill {{form.shoesGender === item ? 'pill-sel' : ''}}"
+            style="{{form.shoesGender === item ? 'background:#3D7A5C;border-color:#3D7A5C;color:#fff;font-weight:600' : ''}}"
+            bindtap="selectShoesGender" data-g="{{item}}">{{item}}</view>
+        </view>
+        <text class="form-label" style="margin-top:28rpx">鞋码体系</text>
+        <view class="pill-row" style="margin-top:10rpx">
+          <view wx:for="{{['中国码','欧码','国际码']}}" wx:key="*this"
+            class="pill {{form.shoesSizeType === item ? 'pill-sel' : ''}}"
+            style="{{form.shoesSizeType === item ? 'background:#3D7A5C;border-color:#3D7A5C;color:#fff;font-weight:600' : ''}}"
+            bindtap="selectShoesSizeType" data-t="{{item}}">{{item}}</view>
+        </view>
+        <text class="form-hint" style="margin-top:8rpx">中国码下切换款式会自动更新尺码范围</text>
+        <text class="form-label" style="margin-top:28rpx">尺码</text>
+        <view class="pill-row" style="margin-top:10rpx">
+          <view wx:for="{{shoesSizeTop5}}" wx:key="*this"
+            class="pill {{form.shoesSize === item ? 'pill-sel' : ''}}"
+            style="{{form.shoesSize === item ? 'background:#3D7A5C;border-color:#3D7A5C;color:#fff;font-weight:600' : ''}}"
+            bindtap="selectShoesSize" data-size="{{item}}">{{item}}</view>
+          <view class="more-btn" bindtap="toggleShoesExpand">
+            <text>更多</text><text class="arrow {{shoesExpanded ? 'up' : ''}}">›</text>
+          </view>
+        </view>
+        <view wx:if="{{shoesExpanded}}" class="pill-row" style="margin-top:10rpx">
+          <view wx:for="{{shoesSizeOptions}}" wx:key="*this"
+            class="pill {{form.shoesSize === item ? 'pill-sel' : ''}}"
+            style="{{form.shoesSize === item ? 'background:#3D7A5C;border-color:#3D7A5C;color:#fff;font-weight:600' : ''}}"
+            bindtap="selectShoesSize" data-size="{{item}}">{{item}}</view>
+        </view>
+      </view>
+
+      <!-- 颜色 -->
+      <view class="form-group">
+        <text class="form-label">颜色</text>
+        <input class="form-input" placeholder="如：银色、白色、黑色" value="{{form.specs.color}}" bindinput="updateSpec" data-key="color" />
+      </view>
+
+      <!-- 重量 -->
+      <view class="form-group">
+        <text class="form-label">重量</text>
+        <input class="form-input" placeholder="如：187g、约5kg" value="{{form.specs.weight}}" bindinput="updateSpec" data-key="weight" />
+      </view>
+
+      <!-- 物品标签 -->
+      <view class="form-group">
+        <text class="form-label">物品标签</text>
+        <view wx:if="{{availableTags.length > 0}}" class="tag-grid">
+          <view wx:for="{{availableTags}}" wx:key="*this"
+            class="tag-chip {{inputTags.indexOf(item) > -1 ? 'tag-chip-sel' : ''}}"
+            style="{{inputTags.indexOf(item) > -1 ? 'background:#3D7A5C;border-color:#3D7A5C;color:#fff;font-weight:600' : ''}}"
+            bindtap="pickTag" data-tag="{{item}}">{{item}}</view>
+        </view>
+        <view class="tag-area">
+          <view wx:for="{{inputTags}}" wx:key="*this" class="input-tag">
+            <text>{{item}}</text>
+            <text class="tag-del" bindtap="removeTag" data-index="{{index}}">×</text>
+          </view>
+          <input wx:if="{{inputTags.length < 5}}"
+            class="tag-input"
+            placeholder="输入后回车添加"
+            bindconfirm="addTag"
+            value="{{tagInput}}"
+            bindinput="updateTagInput"
+          />
+        </view>
+        <text class="form-hint">从上方药丸选择，或输入后回车添加（最多5个）</text>
+      </view>
+
+      <!-- 分隔 -->
+      <view class="section-divider">
+        <text class="section-divider-line"></text>
+        <text class="section-divider-text">购买信息</text>
+        <text class="section-divider-line"></text>
+      </view>
+
+      <!-- 购买日期 -->
+      <view class="form-group">
+        <text class="form-label">购买日期 *</text>
+        <picker mode="date" value="{{form.purchaseDate}}" bindchange="pickDate">
+          <view class="form-input form-picker">
+            <text>{{form.purchaseDate || '请选择日期'}}</text>
+            <text class="picker-arrow">›</text>
+          </view>
+        </picker>
+      </view>
+
+      <!-- 购买价格 -->
+      <view class="form-group">
+        <text class="form-label">购买价格 *</text>
+        <view class="price-wrap">
+          <text class="price-yuan">¥</text>
+          <input class="form-input price-input" type="digit" placeholder="0.00" value="{{form.price}}" bindinput="updateField" data-key="price" />
+        </view>
+      </view>
+
+      <!-- 购买渠道 -->
+      <view class="form-group">
+        <text class="form-label">购买渠道</text>
+        <view class="pill-row">
+          <view wx:for="{{channelTop5}}" wx:key="*this"
+            class="pill {{form.channel === item ? 'pill-sel' : ''}}"
+            style="{{form.channel === item ? 'background:#3D7A5C;border-color:#3D7A5C;color:#fff;font-weight:600' : ''}}"
+            bindtap="selectChannel" data-ch="{{item}}">{{item}}</view>
+        </view>
+        <view class="pill-row pill-row-bottom" style="margin-top:10rpx">
+          <view class="more-btn" bindtap="toggleChannelExpand">
+            <text>更多</text><text class="arrow {{channelExpanded ? 'up' : ''}}">›</text>
+          </view>
+        </view>
+        <view wx:if="{{channelExpanded}}" class="pill-row" style="margin-top:10rpx">
+          <view wx:for="{{channelPresets}}" wx:key="*this"
+            class="pill {{form.channel === item ? 'pill-sel' : ''}}"
+            style="{{form.channel === item ? 'background:#3D7A5C;border-color:#3D7A5C;color:#fff;font-weight:600' : ''}}"
+            bindtap="selectChannel" data-ch="{{item}}">{{item}}</view>
+        </view>
+        <input wx:if="{{form.channel && form.isCustomChannel}}"
+          class="form-input"
+          style="margin-top:14rpx"
+          value="{{form.channel}}"
+          bindinput="updateField"
+          data-key="channel"
+          placeholder="自定义渠道名称…"
+        />
+      </view>
+
+      <!-- 备注说明（放在最后） -->
+      <view class="form-group">
+        <text class="form-label">备注说明</text>
+        <textarea class="form-textarea" placeholder="补充任何其他信息…" value="{{form.remark}}" bindinput="updateField" data-key="remark" auto-height maxlength="200" />
+      </view>
+
+    </view>
+  </scroll-view>
+
+  <!-- 步骤2：预览确认 -->
+  <scroll-view scroll-y class="form-scroll" wx:if="{{step === 2}}">
+    <view class="form-section">
+      <!-- 预览卡片 -->
+      <view class="preview-section">
+        <text class="preview-title">📋 预览</text>
+        <view class="preview-card">
+          <view class="preview-top" style="background:{{selectedCatColor}}18">
+            <text class="preview-emoji">{{selectedCatIcon}}</text>
+          </view>
+          <view class="preview-body">
+            <text class="preview-name">{{form.name || '物品名称'}}</text>
+            <text class="preview-cat">{{selectedCatName}}</text>
+            <view class="preview-tags" wx:if="{{inputTags.length > 0}}">
+              <text wx:for="{{inputTags}}" wx:for-item="tag" wx:key="{{tag}}" class="preview-tag">{{tag}}</text>
+            </view>
+            <view class="preview-price-row">
+              <text class="preview-price">¥{{form.price || '0.00'}}</text>
+              <text class="preview-date">{{form.purchaseDate || '未设置日期'}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 再次展示购买信息（确认用） -->
+      <view class="form-group">
+        <text class="form-label">购买日期</text>
+        <view class="preview-info-row">
+          <text>{{form.purchaseDate || '—'}}</text>
+          <text class="preview-edit-link" bindtap="prevStep">修改 ›</text>
+        </view>
+      </view>
+      <view class="form-group">
+        <text class="form-label">购买价格</text>
+        <view class="preview-info-row">
+          <text class="price-big">¥{{form.price || '0.00'}}</text>
+          <text class="preview-edit-link" bindtap="prevStep">修改 ›</text>
+        </view>
+      </view>
+      <view class="form-group">
+        <text class="form-label">购买渠道</text>
+        <view class="preview-info-row">
+          <text>{{form.channel || '—'}}</text>
+          <text class="preview-edit-link" bindtap="prevStep">修改 ›</text>
+        </view>
+      </view>
+      <view class="form-group" wx:if="{{form.remark}}">
+        <text class="form-label">备注</text>
+        <view class="preview-info-row">
+          <text class="preview-remark">{{form.remark}}</text>
+          <text class="preview-edit-link" bindtap="prevStep">修改 ›</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 底部按钮 -->
+  <view class="bottom-bar">
+    <text wx:if="{{step > 1}}" class="btn-back" bindtap="prevStep">← 上一步</text>
+    <text wx:if="{{step === 1}}" class="btn-next" bindtap="nextStep">下一步 →</text>
+    <text wx:if="{{step === 2}}" class="btn-save {{!canSave ? 'disabled' : ''}}" bindtap="saveItem">保存物品</text>
+  </view>
+
+  <!-- 新增分类弹窗 -->
+  <view wx:if="{{showAddCat}}" class="modal-mask" bindtap="hideAddCatModal">
+    <view class="modal-box" catchtap="noop">
+      <view class="modal-title">新增分类</view>
+      <view class="modal-row">
+        <text class="modal-label">名称</text>
+        <input class="modal-input"
+          placeholder="输入分类名称"
+          value="{{newCatName}}"
+          bindinput="onNewCatName"
+          type="text"
+          maxlength="8"
+        />
+      </view>
+      <view class="modal-row">
+        <text class="modal-label">图标</text>
+        <view class="icon-grid">
+          <view wx:for="{{['📦','👔','👕','👟','🔌','🏠','🍎','📚','⚽','💄','🧴','🔧','🍳','📱','🛋️','💡']}}" wx:key="*this"
+            class="icon-opt {{newCatIcon === item ? 'sel' : ''}}"
+            bindtap="setNewCatIcon" data-icon="{{item}}">{{item}}</view>
+        </view>
+      </view>
+      <view class="modal-row">
+        <text class="modal-label">颜色</text>
+        <view class="color-grid">
+          <view wx:for="{{['#4A90D9','#D4A84B','#5BAD5A','#7B6EB2','#E07B54','#E91E8C','#9E9E9E','#8D6E63','#4CAF50','#E8B4B8']}}" wx:key="*this"
+            class="color-opt {{newCatColor === item ? 'sel' : ''}}"
+            style="background:{{item}}"
+            bindtap="setNewCatColor" data-color="{{item}}"></view>
+        </view>
+      </view>
+      <view class="modal-actions">
+        <text class="modal-cancel" bindtap="hideAddCatModal">取消</text>
+        <text class="modal-confirm" bindtap="confirmAddCat">确认添加</text>
+      </view>
+    </view>
+  </view>
+
+</view>
