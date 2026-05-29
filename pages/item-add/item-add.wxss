@@ -1,0 +1,602 @@
+/* pages/item-add/item-add.wxss */
+page { background: #FAFAF7; }
+
+.page { min-height: 100vh; padding-bottom: 140rpx; }
+
+/* 步骤条 */
+.steps-bar {
+  display: flex;
+  align-items: center;
+  padding: 40rpx 60rpx 32rpx;
+  background: #fff;
+  border-bottom: 1rpx solid #F0EDE6;
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.step-circle {
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 50%;
+  background: #E8E5DC;
+  color: #9E9E8A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  font-weight: 700;
+  transition: all 0.3s;
+}
+
+.step-item.active .step-circle {
+  background: #3D7A5C;
+  color: #fff;
+}
+
+.step-label {
+  font-size: 20rpx;
+  color: #9E9E8A;
+}
+
+.step-item.active .step-label {
+  color: #3D7A5C;
+  font-weight: 600;
+}
+
+.step-line {
+  flex: 1;
+  height: 2rpx;
+  background: #E8E5DC;
+  margin: 0 20rpx;
+  margin-bottom: 28rpx;
+  transition: background 0.3s;
+}
+
+.step-line.active { background: #3D7A5C; }
+
+/* 滚动容器 */
+.form-scroll {
+  height: calc(100vh - 260rpx);
+  box-sizing: border-box;
+}
+
+.form-section { padding: 32rpx 30rpx; }
+.form-scroll .form-section { padding: 32rpx 30rpx; }
+
+.form-group { margin-bottom: 36rpx; }
+
+.form-label {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1A1A18;
+  margin-bottom: 16rpx;
+}
+
+.form-label::before {
+  content: '';
+  display: inline-block;
+  width: 6rpx;
+  height: 28rpx;
+  background: #3D7A5C;
+  border-radius: 3rpx;
+  margin-right: 10rpx;
+  vertical-align: middle;
+}
+
+.form-input {
+  background: #fff;
+  border: 1rpx solid #E0DDD5;
+  border-radius: 16rpx;
+  padding: 18rpx 24rpx;
+  font-size: 30rpx;
+  color: #1A1A18;
+  width: 100%;
+  height: 76rpx;
+  box-sizing: border-box;
+  line-height: 1.4;
+}
+
+.form-picker {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.picker-arrow {
+  font-size: 32rpx;
+  color: #C8C4B8;
+}
+
+.form-textarea {
+  background: #fff;
+  border: 1rpx solid #E0DDD5;
+  border-radius: 16rpx;
+  padding: 22rpx 24rpx;
+  font-size: 30rpx;
+  color: #1A1A18;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 160rpx;
+}
+
+.form-hint {
+  display: block;
+  font-size: 22rpx;
+  color: #B8B4A8;
+  margin-top: 10rpx;
+}
+
+/* ==============================
+   统一药丸样式（分类/尺码/渠道）
+   ============================== */
+.pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+  align-items: center;
+}
+
+.pill-row-bottom {
+  border-top: 1rpx dashed #E8E5DC;
+  padding-top: 12rpx;
+  margin-top: 4rpx;
+}
+
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+  padding: 10rpx 18rpx;
+  border-radius: 100rpx;
+  border: 1rpx solid #E0DDD5;
+  background: #fff;
+  font-size: 26rpx;
+  color: #3A3A30;
+  transition: all 0.15s;
+}
+
+.pill:active { transform: scale(0.95); }
+
+/* 选中态 */
+.pill.pill-sel {
+  background: #3D7A5C !important;
+  border-color: #3D7A5C !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.pill-name {
+  font-size: 26rpx;
+  color: inherit;
+}
+
+/* 更多/增加按钮 */
+.more-btn {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+  padding: 10rpx 18rpx;
+  border-radius: 100rpx;
+  border: 1rpx dashed #D0CCC0;
+  background: transparent;
+  font-size: 24rpx;
+  color: #9E9E8A;
+}
+
+.more-btn .arrow {
+  font-size: 24rpx;
+  transition: transform 0.2s;
+  display: inline-block;
+}
+
+.more-btn .arrow.up {
+  transform: rotate(90deg);
+}
+
+.add-cat-btn {
+  display: flex;
+  align-items: center;
+  padding: 10rpx 18rpx;
+  border-radius: 100rpx;
+  border: 1rpx dashed #3D7A5C;
+  font-size: 24rpx;
+  color: #3D7A5C;
+  font-weight: 600;
+}
+
+/* 智能推荐提示 */
+.rec-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6rpx;
+  background: #FFF8E6;
+  border: 1rpx solid #F0D080;
+  border-radius: 100rpx;
+  padding: 6rpx 16rpx;
+  margin-bottom: 14rpx;
+}
+
+.rec-icon { font-size: 22rpx; }
+.rec-text { font-size: 22rpx; color: #C88A2C; font-weight: 600; }
+
+/* ==============================
+   标签区域（药丸网格）
+   ============================== */
+.tag-area {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+  align-items: center;
+  background: #fff;
+  border: 1rpx solid #E0DDD5;
+  border-radius: 16rpx;
+  padding: 16rpx 20rpx;
+  min-height: 72rpx;
+}
+
+.input-tag {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  background: #3D7A5C;
+  color: #fff;
+  font-size: 24rpx;
+  padding: 8rpx 14rpx;
+  border-radius: 100rpx;
+}
+
+.tag-del {
+  font-size: 28rpx;
+  opacity: 0.7;
+}
+
+.tag-input {
+  font-size: 26rpx;
+  color: #1A1A18;
+  flex: 1;
+  min-width: 180rpx;
+}
+
+.tag-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+  margin-top: 14rpx;
+}
+
+.tag-chip {
+  padding: 8rpx 18rpx;
+  border-radius: 100rpx;
+  border: 1rpx solid #E0DDD5;
+  background: #FAFAF7;
+  font-size: 24rpx;
+  color: #6A6A5A;
+  transition: all 0.15s;
+}
+
+.tag-chip.tag-chip-sel {
+  background: #3D7A5C;
+  color: #fff;
+  border-color: #3D7A5C;
+  font-weight: 600;
+}
+
+/* 分隔标题 */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin: 8rpx 0 28rpx;
+}
+
+.section-divider-line {
+  flex: 1;
+  height: 1rpx;
+  background: #E8E5DC;
+}
+
+.section-divider-text {
+  font-size: 24rpx;
+  color: #9E9E8A;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* 价格 */
+.price-wrap {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1rpx solid #E0DDD5;
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  overflow: hidden;
+}
+
+.price-yuan {
+  font-size: 36rpx;
+  color: #C88A2C;
+  font-weight: 700;
+  margin-right: 8rpx;
+  flex-shrink: 0;
+}
+
+.price-input {
+  border: none;
+  padding-left: 0;
+}
+
+/* 预览 */
+.preview-section { margin-top: 40rpx; }
+
+.preview-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1A1A18;
+  margin-bottom: 20rpx;
+}
+
+.preview-card {
+  background: #fff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.08);
+}
+
+.preview-top {
+  height: 120rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-emoji { font-size: 60rpx; }
+
+.preview-body { padding: 24rpx; }
+
+.preview-name {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1A1A18;
+  margin-bottom: 8rpx;
+}
+
+.preview-cat {
+  display: block;
+  font-size: 24rpx;
+  color: #9E9E8A;
+  margin-bottom: 12rpx;
+}
+
+.preview-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8rpx;
+  margin-bottom: 16rpx;
+}
+
+.preview-tag {
+  font-size: 20rpx;
+  color: #7A7A6A;
+  background: #F0EDE6;
+  padding: 4rpx 14rpx;
+  border-radius: 100rpx;
+}
+
+.preview-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.preview-price {
+  font-size: 32rpx;
+  font-weight: 800;
+  color: #C88A2C;
+}
+
+.preview-date {
+  font-size: 24rpx;
+  color: #9E9E8A;
+}
+
+/* step2 确认信息行 */
+.preview-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: #fff;
+  border: 1rpx solid #E0DDD5;
+  border-radius: 16rpx;
+  padding: 22rpx 24rpx;
+  font-size: 30rpx;
+  color: #1A1A18;
+}
+
+.preview-info-row .price-big {
+  font-size: 38rpx;
+  font-weight: 800;
+  color: #C88A2C;
+}
+
+.preview-edit-link {
+  font-size: 26rpx;
+  color: #3D7A5C;
+  font-weight: 600;
+  flex-shrink: 0;
+  margin-left: 20rpx;
+}
+
+.preview-remark {
+  font-size: 28rpx;
+  color: #6A6A5A;
+  line-height: 1.5;
+}
+
+/* 底部按钮 */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20rpx 30rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  background: rgba(250,250,247,0.95);
+  backdrop-filter: blur(20rpx);
+  display: flex;
+  gap: 16rpx;
+  border-top: 1rpx solid #F0EDE6;
+  z-index: 100;
+}
+
+.btn-back {
+  padding: 24rpx 32rpx;
+  background: #fff;
+  border: 1rpx solid #E0DDD5;
+  border-radius: 100rpx;
+  font-size: 30rpx;
+  color: #6A6A5A;
+}
+
+.btn-next, .btn-save {
+  flex: 1;
+  padding: 24rpx 32rpx;
+  background: linear-gradient(135deg, #3D7A5C, #5A9A7A);
+  border-radius: 100rpx;
+  font-size: 30rpx;
+  color: #fff;
+  text-align: center;
+  font-weight: 600;
+}
+
+.btn-save.disabled { opacity: 0.4; }
+
+/* ==============================
+   新增分类弹窗
+   ============================== */
+.modal-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-box {
+  width: 600rpx;
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 40rpx 36rpx;
+  box-shadow: 0 20rpx 60rpx rgba(0,0,0,0.2);
+}
+
+.modal-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #1A1A18;
+  text-align: center;
+  margin-bottom: 36rpx;
+}
+
+.modal-row {
+  margin-bottom: 30rpx;
+}
+
+.modal-label {
+  display: block;
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #6A6A5A;
+  margin-bottom: 14rpx;
+}
+
+.modal-input {
+  background: #FAFAF7;
+  border: 1rpx solid #E0DDD5;
+  border-radius: 14rpx;
+  padding: 18rpx 22rpx;
+  font-size: 30rpx;
+  color: #1A1A18;
+  width: 100%;
+  box-sizing: border-box;
+  height: 72rpx;
+}
+
+.icon-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.icon-opt {
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  border-radius: 16rpx;
+  border: 1rpx solid #E0DDD5;
+  background: #FAFAF7;
+  transition: all 0.15s;
+}
+
+.icon-opt.sel {
+  border-color: #3D7A5C;
+  background: #E8F4EE;
+}
+
+.color-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14rpx;
+}
+
+.color-opt {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  transition: transform 0.15s;
+}
+
+.color-opt.sel {
+  transform: scale(1.2);
+  box-shadow: 0 0 0 4rpx #fff, 0 0 0 6rpx currentColor;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 36rpx;
+}
+
+.modal-cancel {
+  flex: 1;
+  padding: 22rpx;
+  text-align: center;
+  font-size: 30rpx;
+  color: #9E9E8A;
+  border: 1rpx solid #E0DDD5;
+  border-radius: 100rpx;
+}
+
+.modal-confirm {
+  flex: 2;
+  padding: 22rpx;
+  text-align: center;
+  font-size: 30rpx;
+  color: #fff;
+  background: linear-gradient(135deg, #3D7A5C, #5A9A7A);
+  border-radius: 100rpx;
+  font-weight: 600;
+}
