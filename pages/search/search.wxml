@@ -1,0 +1,116 @@
+<!-- pages/search/search.wxml -->
+<view class="page">
+  <!-- 搜索框 -->
+  <view class="search-box">
+    <view class="search-inner">
+      <text class="search-icon">🔍</text>
+      <input 
+        class="search-input" 
+        placeholder="搜索物品名称、标签、品牌…"
+        placeholder-class="search-placeholder"
+        value="{{keyword}}"
+        bindinput="onInput"
+        bindconfirm="doSearch"
+        confirm-type="search"
+        focus="{{true}}"
+      />
+      <text wx:if="{{keyword}}" class="search-clear" bindtap="clearSearch">✕</text>
+    </view>
+    <text class="search-cancel" bindtap="goBack">取消</text>
+  </view>
+
+  <!-- 搜索结果 -->
+  <view wx:if="{{keyword && !loading}}" class="result-area">
+    <view wx:if="{{results.length > 0}}" class="result-list">
+      <view 
+        wx:for="{{results}}" 
+        wx:key="id"
+        class="result-item"
+        bindtap="goDetail"
+        data-id="{{item.id}}"
+      >
+        <view class="result-icon" style="background:{{item.category_color}}22">
+          <text>{{item.category_icon}}</text>
+        </view>
+        <view class="result-body">
+          <view class="result-name-row">
+            <text class="result-name">{{item.name}}</text>
+            <text class="result-price">¥{{item.price_str}}</text>
+          </view>
+          <view class="result-meta">
+            <text>{{item.category_name}}</text>
+            <text class="dot">·</text>
+            <text>{{item.specs.brand}}</text>
+            <text class="dot">·</text>
+            <text>{{item.location}}</text>
+          </view>
+          <view wx:if="{{item.tags.length > 0}}" class="result-tags">
+            <text wx:for="{{item.tags}}" wx:for-item="tag" wx:key="{{tag}}" class="result-tag">{{tag}}</text>
+          </view>
+        </view>
+        <text class="result-arrow">›</text>
+      </view>
+    </view>
+
+    <view wx:else class="no-result">
+      <text class="no-icon">🔭</text>
+      <text class="no-t">没有找到 "{{keyword}}"</text>
+      <text class="no-sub">换个关键词试试</text>
+    </view>
+  </view>
+
+  <!-- 历史记录 & 热门 -->
+  <view wx:if="{{!keyword}}" class="hot-area">
+    <!-- 热门分类 -->
+    <view class="section">
+      <text class="sec-title">热门分类</text>
+      <view class="hot-cats">
+        <view 
+          wx:for="{{categories}}" 
+          wx:key="id"
+          class="hot-cat"
+          style="background:{{item.color}}18;border-color:{{item.color}}44"
+          bindtap="goCategory"
+          data-id="{{item.id}}"
+        >
+          <text class="hot-cat-icon">{{item.icon}}</text>
+          <text class="hot-cat-name">{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 搜索历史 -->
+    <view wx:if="{{history.length > 0}}" class="section">
+      <view class="sec-header">
+        <text class="sec-title">搜索历史</text>
+        <text class="sec-clear" bindtap="clearHistory">清除</text>
+      </view>
+      <view class="history-tags">
+        <text 
+          wx:for="{{history}}" 
+          wx:key="{{item}}"
+          class="history-tag"
+          bindtap="useHistory"
+          data-word="{{item}}"
+        >{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 全部物品快速浏览 -->
+    <view class="section">
+      <text class="sec-title">全部物品</text>
+    </view>
+    <view class="quick-grid">
+      <view 
+        wx:for="{{recentItems}}" 
+        wx:key="id"
+        class="quick-card"
+        bindtap="goDetail"
+        data-id="{{item.id}}"
+      >
+        <text class="quick-emoji">{{item.category_icon}}</text>
+        <text class="quick-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+</view>
